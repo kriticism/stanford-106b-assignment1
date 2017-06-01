@@ -1,0 +1,66 @@
+Quantum Mechanics is the way the universe works. But often its effects are washed out unless we look at very small scales. Or very cold temperatures.
+Much recent progress has been in understanding how quantum mechanics affects macroscopic numbers of atoms.
+Electrons are elementary particles. They have no constituent parts. Yet we frequently perform experiments where they split up!
+Quantum Mechanics is a framework rather than a theory .
+For example, suppose you’re given Coulomb’s law, describing how electric charges experience a force.
+You can either choose to think in the classical framework, or you could choose to think in the quantum framework, which means that you plug this into Schrodinger’s equation.
+It’s like running a programme on different operating systems, and the operating system of the universe is quantum mechanics
+Consider the electron orbiting the proton.
+The classical problem is exactly the same as a planet orbiting the sun.
+The orbits are ellipses, with the sun (or proton) at one focus.
+But there’s no restriction on the size or eccentricity of the orbit that depends only on initial conditions of the problem
+The question of the distances between the planets used to be the biggest open problem in science. But we now know that it’s a complicated question that isn’t answered by the fundamental theory.
+In quantum mechanics the answer is very different
+The electron can only sit in very particular orbits.
+Yet, in each of these orbits, its position is undetermined. It is smeared out, a wave of probability.
+The mathematical framework of quantum mechanics was covered in Vectors and Matrices, with more in next year’s Linear Algebra.
+However, this may not be apparent when taking your first Quantum Mechanics course next year, where Differential Equations will appear more important.
+The Principle of Superposition
+The state of a system consists of all the information that’s required to determine the state of the system at all times in the future
+In Classical Mechanics, the state of a system is by given the positions and momenta of all the particles.
+ The Principle of Superposition
+In quantum mechanics, the state lives in a vector space. This means that we are allowed to add and subtract states something which makes no sense in classical mechanics.
+The vector is called the wavefunction. It is typically a vector in an infinite dimensional vector space, known as a Hilbert space.
+While the state of the system is a vector, the measurements that we do on a system are matrices. We have a different matrix for each type of measurement: e.g. position, momentum, energy
+The possible outcomes of a measurement are the eigenvalues of the matrix.
+matrix
+For example: if H is the matrix representing a measurement of energy, then the eigenvalues E are the possible outcomes of that measurement
+When H is energy, this is known as the Schrodinger Equation.
+What happens if our state  is not an eigenvector of the matrix we are measuring?
+Then the measurement could give any one of the eigenvalues Ei . Each occurs with some probability
+We expand our state in a basis of eigenvectors of H.
+Then the probability of the measurement giving Ei is
+Most matrices have different eigenvectors. This means that if the state is in an eigenvector of one matrix, it is unlikely to be in an eigenvector of a different matrix.
+So if one type of measurement is certain, another type becomes uncertain.
+This is Heisenberg’s Uncertainty Principle. If we know, say, the position of the particle then it’s momentum becomes uncertain. And vice versa.
+Entanglement
+To end, let’s look at one of the more bewildering aspects of quantum mechanics. It is the fact that strange correlations can exist between experiments. This subject is usually called entanglement.
+Entanglement
+This subject has a venerable history
+Einstein, Podolsky and Rosen, 1935, tried to use it to disprove quantum mechanics. The argument was roughly: entanglement is so ridiculous that it can’t possibly be right.
+Bell, 1964 showed that one could test through experiment whether entanglement actually occurs.
+Aspect et. al. 1982 did the experiment.
+Punchline: the universe is a much stranger place than you imagined!
+I’ll tell you about a result from 1990 by Greenberger, Horne and Zeilinger known as
+GHZ correlations.
+Three scientists are each sitting in a lab, separated in spacetime.
+Every minute, they receive a package sent from a mysterious central station. They are told what they have to do.
+They could be elementary particles or the whole thing could just be a hoax with the machine flashing up +1/-1 at random
+Each measurement is recorded until each scientist has a list that looks like this but with a bazillion entries.
+Now the scientists get together and start looking for correlations in the measurements. They notice the following.
+This means the first person measured X, while the second and third people measured Y
+But this gives a prediction .whenever all three scientists measured X, the results multiplied together must give +1
+
+This is so simple, it couldn’t even be called a law of physics. It follows from our most basic ideas about how the universe works.
+The things measured were the polarization of photons. (Spins of elementary particles would work just as well). The results are
+The very basic (classical) intuition for how the universe works is wrong!
+An implicit assumption is that the measurements are performed independently, so that experiment 2 has no way of knowing whether the switch on experiment 1 is set to X or Y.
+But we can guarantee that this is true, by placing the scientists at space-like separated points.
+It appears that these correlations require information to be transmitted faster than light!
+The resolution to the paradox is that we assumed the packages leaving the central station had definite assignments
+But in the quantum world, we cannot give definite assignments to all possible measurements. The package that arrived didn’t have both X and Y assigned at the same time.
+The GHZ correlations are almost nonlocal. In a classical world, the only way you could get such correlations is by non-locality, which implies transmission of information faster than the speed of light.
+But our world is quantum. And such correlations are allowed without faster-than-light communication.
+What were they measuring?
+They were measuring spins of particles.
+The state that the central station was sending is neither an eigenvector of X nor Y.
