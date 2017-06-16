@@ -40,7 +40,10 @@ public:
     void shuffleBoard();
     void printBoard();
     bool isInBounds(int _i, int _j);
-    bool doDFS(int i, int j, string word, bool visited[BOARD_SIDE_LEN][BOARD_SIDE_LEN], int idx);
+    bool doDFS(int i, int j, string word, bool (&visited)[BOARD_SIDE_LEN][BOARD_SIDE_LEN], int idx);
+    void doDFSAndAddWords(int i, int j, string strTillHere, bool visited[BOARD_SIDE_LEN][BOARD_SIDE_LEN], Set<string> &result);
+    Vector<string> splitStringToWords(string text, char sep);
+    string printHumanWords();
     // TODO: add any other member functions/variables necessary
     friend ostream& operator<<(ostream& out, Boggle& boggle);
 
@@ -48,6 +51,8 @@ private:
     char board[4][4];
     Vector<int> cubeNumber;
     Lexicon gameDict;
+    Set<string> humanWords;
+    Set<string> computerWords;
     // bool dfsSearch(int r, int c, string word);
     // vector<int>v = {1, 3, 5, 7};
     // TODO: add any other member functions/variables necessary

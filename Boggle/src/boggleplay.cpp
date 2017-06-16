@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 #include "lexicon.h"
-#include "boggle.h"
+#include "Boggle.h"
 #include <cctype> // for tolower()
 
 
@@ -20,7 +20,7 @@ bool isValidString(string word){
     int strSize = word.size();
     if (strSize != 16)
         return false;
-    for(int i=0; i<word.size(); i++){
+    for(int i=0; i< (int) word.size(); i++){
         if(!isalpha(word[i]))
             return false;
     }
@@ -34,7 +34,7 @@ void playOneGame(Lexicon& dictionary) {
     string str; getline(cin, str);
     char resp; resp = tolower(str[0]);
 
-    cout<<"\n response entered: "<<resp;
+    // cout<<"\n response entered: "<<resp;
     string initStr = "";                            // string = "" for random cubes of boggle, ELSE a valid 16-letter string
     while(1){                                       // loop until correct response is entered
         if(resp == 'y'){                            // you get yes | generate random board and play
@@ -68,9 +68,38 @@ void playOneGame(Lexicon& dictionary) {
 
     while (1) {                                    // play game until user says NO
         // game play logic starts
-        cout<<"\ngames here...";
-        cout<<"hi"<<currGame.humanWordSearch("apple")<<endl;
-            break;
+        string humanInput;
+        cout<<"Your words ("<<currGame.getScoreHuman()<<"): "<<currGame.printHumanWords()<<endl;
+        cout<<"Your score: "<<currGame.getScoreHuman()<<"\n";
+        cout<<"Type a word (or Enter to stop): ";
+        getline(cin,humanInput);
+        if(humanInput == ""){                     // user wants to stop the game
+        }
+
+        else{                                     // user will enter more words
+            Vector<string> enteredWords = currGame.splitStringToWords(humanInput, ' ');
+            Vector<int> indexesToRemove;
+            int idx = 0;
+            for (Vector<string>::iterator it = enteredWords.begin() ; it != enteredWords.end(); ++it){
+
+                // std::cout << ' ' << *it;
+                // if  word is not valid, save it
+                if(!currGame.humanWordSearch(*it)){
+                    // enteredWords.remove(idx); idx--;
+                    cout<<"\n Will delete "<<*it;
+                    indexesToRemove.push_back(idx);
+                }
+                idx++;
+            }
+            for(int i=indexesToRemove.size()-1; i>-1; i--){
+                enteredWords.remove(indexesToRemove[i]);
+            }
+
+            cout<<"\n Valid entered words are: "<<enteredWords.toString();
+        }
+
+        break;
+
         // game play logic ends
     }
 
