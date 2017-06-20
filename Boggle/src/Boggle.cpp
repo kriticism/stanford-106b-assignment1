@@ -84,8 +84,10 @@ bool Boggle::checkWord(string word) {
             if(board[i][j] == word[0]){
                 cout<<"\n initiating search for "<<word<<" at "<<i<<j;
                 visited[i][j] = true;
+                // BoggleGUI::setHighlighted(i, j, true);
                 bool retVal = doDFS(i,j, word, visited, 1);
                 visited[i][j] = false;
+                // BoggleGUI::setHighlighted(i, j, false);
 
                 if(retVal){
                     cout<<endl<<word<<" found at "<<i<<j;
@@ -132,7 +134,9 @@ Set<string> Boggle::computerWordSearch() {
     for(int i=0; i<BOARD_SIDE_LEN; i++){
         for(int j=0; j<BOARD_SIDE_LEN; j++){
             visited[i][j] = true;
+            BoggleGUI::setHighlighted(i, j, true);
             doDFSAndAddWords(i,j,string(1, board[i][j]), visited, result);
+            BoggleGUI::setHighlighted(i, j, false);
             visited[i][j] = false;
         }
     }
