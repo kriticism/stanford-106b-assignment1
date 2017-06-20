@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "Boggle.h"
+#include "bogglegui.h"
 #include "shuffle.h"
 #include "random.h"
 #include <string>
@@ -39,6 +40,9 @@ static int dr[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
 static int dc[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
 Boggle::Boggle(Lexicon& dictionary, string boardText) {
     gameDict = dictionary;
+    // initialize gui here
+    BoggleGUI::initialize(BOARD_SIDE_LEN, BOARD_SIDE_LEN);
+
     if(boardText == ""){                 // case of random letters on board
         for(int i=0; i<16; i++)
             cubeNumber.push_back(i);
@@ -48,9 +52,11 @@ Boggle::Boggle(Lexicon& dictionary, string boardText) {
         for(int i=0; i<16; i++){
             board[(i/4)][(i%4)] = boardText[i];
         }
+
     }
     // cout<<"\nAfter initialization, board is:\n";
     printBoard();
+    BoggleGUI::labelAllCubes(getBoardString());
 }
 
 void Boggle::shuffleBoard(){
@@ -63,7 +69,6 @@ void Boggle::shuffleBoard(){
 
 char Boggle::getLetter(int row, int col) {
     return board[row][col];
-    // return '?';   // remove this
 }
 
 /*
@@ -84,6 +89,7 @@ bool Boggle::checkWord(string word) {
 
                 if(retVal){
                     cout<<endl<<word<<" found at "<<i<<j;
+                    cout<<"You found a new word \""<<word<<"\"!";
                     return true;
                 }
             }
@@ -99,28 +105,9 @@ bool Boggle::checkWord(string word) {
 bool Boggle::humanWordSearch(string word) {
     // return false if word not in dictionary
     if(!gameDict.contains(word)){
-        cout<<endl<<word<<" not in dict.";
+        cout<<endl<<word<<": is not in dictionary.";
         return false;
     }
-    // else check if it is on board too
-//    bool visited[BOARD_SIDE_LEN][BOARD_SIDE_LEN];
-//    for(int i=0; i<BOARD_SIDE_LEN; i++){
-//        for(int j=0; j<BOARD_SIDE_LEN; j++){
-//            visited[i][j] = false;
-//        }
-//    }
-
-//    for(int i=0; i<BOARD_SIDE_LEN; i++){
-//        for(int j=0; j<BOARD_SIDE_LEN; j++){
-//            if(board[i][j] == word[0]){
-//                if( doDFS(i,j,word,visited,1) ){
-//                    return true;
-//                }
-//            }
-//        }
-//    }
-//    return false;
-
     return checkWord(word);
 }
 
@@ -249,4 +236,30 @@ Vector<string> Boggle::splitStringToWords(string text, char sep) {
 
 string Boggle::printHumanWords(){
     return humanWords.toString();
+}
+
+string Boggle::printComputerWords(){
+    return computerWords.toString();
+}
+
+void Boggle::addWordsToHumanList(Vector<string> validWords){
+    for (Vector<string>::iterator it = validWords.begin() ; it != validWords.end(); ++it){
+        humanWords.add(*it);
+        BoggleGUI::recordWord(*it, BoggleGUI::HUMAN);
+        BoggleGUI::setScore(getScoreHuman(), BoggleGUI::HUMAN);
+    }
+}
+
+void Boggle::addWordsToComputerList(Set<string> validWords){
+    for (Set<string>::iterator it = validWords.begin() ; it != validWords.end(); ++it){
+        computerWords.add(*it);
+        BoggleGUI::recordWord(*it, BoggleGUI::COMPUTER);
+        BoggleGUI::setScore(getScoreComputer(), BoggleGUI::COMPUTER);
+    }
+}
+
+string Boggle::getBoardString(){
+    string boardString = "";
+    for(int i=0; i<BOARD_SIDE_LEN; i++) for(int j=0; j<BOARD_SIDE_LEN; j++) boardString += board[i][j];
+    return boardString;
 }

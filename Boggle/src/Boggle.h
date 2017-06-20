@@ -44,6 +44,10 @@ public:
     void doDFSAndAddWords(int i, int j, string strTillHere, bool visited[BOARD_SIDE_LEN][BOARD_SIDE_LEN], Set<string> &result);
     Vector<string> splitStringToWords(string text, char sep);
     string printHumanWords();
+    string printComputerWords();
+    void addWordsToHumanList(Vector<string> validWords);
+    void addWordsToComputerList(Set<string> validWords);
+    string getBoardString();
     // TODO: add any other member functions/variables necessary
     friend ostream& operator<<(ostream& out, Boggle& boggle);
 

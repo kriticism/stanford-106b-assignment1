@@ -36,7 +36,7 @@ void playOneGame(Lexicon& dictionary) {
 
     // cout<<"\n response entered: "<<resp;
     string initStr = "";                            // string = "" for random cubes of boggle, ELSE a valid 16-letter string
-    while(1){                                       // loop until correct response is entered
+    while(1){                                       // loop until correct response is entered by human
         if(resp == 'y'){                            // you get yes | generate random board and play
             break;
         }
@@ -66,23 +66,24 @@ void playOneGame(Lexicon& dictionary) {
 
     Boggle currGame(dictionary, initStr);          // initialise board
 
-    while (1) {                                    // play game until user says NO
-        // game play logic starts
-        string humanInput;
-        cout<<"Your words ("<<currGame.getScoreHuman()<<"): "<<currGame.printHumanWords()<<endl;
-        cout<<"Your score: "<<currGame.getScoreHuman()<<"\n";
-        cout<<"Type a word (or Enter to stop): ";
-        getline(cin,humanInput);
-        if(humanInput == ""){                     // user wants to stop the game
-        }
 
-        else{                                     // user will enter more words
+    // game play logic starts
+    cout<<"It's your turn!\n";
+
+
+    string humanInput;
+    cout<<"\nYour words ("<<currGame.getScoreHuman()<<"): "<<currGame.printHumanWords();
+    cout<<"\nYour score: "<<currGame.getScoreHuman();
+    cout<<"\nType a word (or Enter to stop): ";
+    getline(cin,humanInput);
+    transform(humanInput.begin(), humanInput.end(),humanInput.begin(), ::toupper);
+
+    // keep taking input unless ENTER is pressed
+    while(humanInput != ""){                  // user will enter more words
             Vector<string> enteredWords = currGame.splitStringToWords(humanInput, ' ');
             Vector<int> indexesToRemove;
             int idx = 0;
             for (Vector<string>::iterator it = enteredWords.begin() ; it != enteredWords.end(); ++it){
-
-                // std::cout << ' ' << *it;
                 // if  word is not valid, save it
                 if(!currGame.humanWordSearch(*it)){
                     // enteredWords.remove(idx); idx--;
@@ -96,12 +97,35 @@ void playOneGame(Lexicon& dictionary) {
             }
 
             cout<<"\n Valid entered words are: "<<enteredWords.toString();
-        }
+            currGame.addWordsToHumanList(enteredWords); // add these to humanWords
 
-        break;
-
-        // game play logic ends
+            cout<<"\nCurrent TOTAL list of words by human: "<<currGame.printHumanWords();
+            // take input for more words
+            cout<<"\nYour words ("<<currGame.getScoreHuman()<<"): "<<currGame.printHumanWords();
+            cout<<"\nYour score: "<<currGame.getScoreHuman();
+            cout<<"\nType a word (or Enter to stop): ";
+            getline(cin,humanInput);
     }
+
+    // make computer generate the words
+    Set<string> validComputerWords = currGame.computerWordSearch();
+    currGame.addWordsToComputerList(validComputerWords);
+
+    cout<<"\nCurrent TOTAL list of words by Computer: "<<currGame.printComputerWords();
+    cout<<"\nComputer's words ("<<currGame.getScoreComputer()<<"): "<<currGame.printComputerWords();
+    cout<<"\nComputer's score: "<<currGame.getScoreComputer();
+
+    // compare the score
+    if(currGame.getScoreComputer() <= currGame.getScoreHuman()){             // if comp <= human, human wins
+        cout<<"\nHuman wins.";
+    } else{
+        cout<<"\nComputer wins.";                                            // else human loses
+    }
+
+
+
+    // game play logic ends
+
 
     cout<<"Have a nice day.";
 
