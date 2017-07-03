@@ -12,7 +12,6 @@
 #include "PQEntry.h"
 using namespace std;
 
-// TODO: comment
 class ArrayPriorityQueue {
 public:
     ArrayPriorityQueue();
@@ -29,7 +28,11 @@ public:
 
 private:
     // TODO: add any other member functions/variables necessary
+    PQEntry* ArrayPQarr; // Pointer to internal array of elements
+    int ArrayPQcapacity; // Integer for array’s actual capacity
+    int ArrayPQsize;
 
 };
+
 
 #endif

@@ -22,6 +22,9 @@
 #include <iostream>
 using namespace std;
 
+/*
+ * Class w/ Integer priority and char value
+*/
 struct PQEntry {
 public:
     string value;
