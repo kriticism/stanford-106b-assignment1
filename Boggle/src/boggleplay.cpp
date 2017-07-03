@@ -8,6 +8,7 @@
 using namespace std;
 #include "lexicon.h"
 #include "Boggle.h"
+#include "bogglegui.h"
 #include <cctype> // for tolower()
 
 
@@ -76,12 +77,15 @@ void playOneGame(Lexicon& dictionary) {
     cout<<"\nYour score: "<<currGame.getScoreHuman();
     cout<<"\nType a word (or Enter to stop): ";
     getline(cin,humanInput);
-    transform(humanInput.begin(), humanInput.end(),humanInput.begin(), ::toupper);
+    transform(humanInput.begin(), humanInput.end(),humanInput.begin(), ::toupper); // TODO not working
+
 
     // keep taking input unless ENTER is pressed
     while(humanInput != ""){                  // user will enter more words
+            cout<<"Human input is:: "<<humanInput;
             Vector<string> enteredWords = currGame.splitStringToWords(humanInput, ' ');
             Vector<int> indexesToRemove;
+
             int idx = 0;
             for (Vector<string>::iterator it = enteredWords.begin() ; it != enteredWords.end(); ++it){
                 // if  word is not valid, save it
@@ -118,8 +122,10 @@ void playOneGame(Lexicon& dictionary) {
     // compare the score
     if(currGame.getScoreComputer() <= currGame.getScoreHuman()){             // if comp <= human, human wins
         cout<<"\nHuman wins.";
+
     } else{
         cout<<"\nComputer wins.";                                            // else human loses
+        BoggleGUI::setStatusMessage("Ha ha ha, I destroyed you. Better luck next time, puny human!");
     }
 
 

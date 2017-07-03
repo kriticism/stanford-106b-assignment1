@@ -18,6 +18,7 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <unistd.h>
 
 // letters on all 6 sides of every cube
 static string CUBES[16] = {
@@ -78,17 +79,17 @@ bool Boggle::checkWord(string word) {
     // TODO: implement
     bool visited[BOARD_SIDE_LEN][BOARD_SIDE_LEN];
     for(int i=0; i<BOARD_SIDE_LEN; i++) for(int j=0; j<BOARD_SIDE_LEN; j++) visited[i][j] = false;
-
+    BoggleGUI::clearHighlighting();
     for(int i=0; i<BOARD_SIDE_LEN; i++){
         for(int j=0; j<BOARD_SIDE_LEN; j++){
             if(board[i][j] == word[0]){
                 cout<<"\n initiating search for "<<word<<" at "<<i<<j;
                 visited[i][j] = true;
-                // BoggleGUI::setHighlighted(i, j, true);
+                BoggleGUI::setHighlighted(i, j, true);
                 bool retVal = doDFS(i,j, word, visited, 1);
                 visited[i][j] = false;
-                // BoggleGUI::setHighlighted(i, j, false);
-
+                if(!retVal)
+                    BoggleGUI::setHighlighted(i, j, false);
                 if(retVal){
                     cout<<endl<<word<<" found at "<<i<<j;
                     cout<<"You found a new word \""<<word<<"\"!";
@@ -134,9 +135,10 @@ Set<string> Boggle::computerWordSearch() {
     for(int i=0; i<BOARD_SIDE_LEN; i++){
         for(int j=0; j<BOARD_SIDE_LEN; j++){
             visited[i][j] = true;
-            BoggleGUI::setHighlighted(i, j, true);
+            // BoggleGUI::setHighlighted(i, j, true);
+            // usleep(100000);
             doDFSAndAddWords(i,j,string(1, board[i][j]), visited, result);
-            BoggleGUI::setHighlighted(i, j, false);
+            // BoggleGUI::setHighlighted(i, j, false);
             visited[i][j] = false;
         }
     }
@@ -187,15 +189,20 @@ bool Boggle::doDFS(int i, int j, string word, bool (&visited)[BOARD_SIDE_LEN][BO
         int _i = i+dr[k], _j = j+dc[k];
 
         if(isInBounds(_i, _j) && !visited[_i][_j] && board[_i][_j] == word[idx]){
-            if(word == "SWAM")
-                cout<<endl<<"Checking "<<_i<<_j;
+//            if(word == "SWAM")
+//                cout<<endl<<"Checking "<<_i<<_j;
             visited[_i][_j] = true;
+            BoggleGUI::setHighlighted(_i, _j, true);
+            // usleep(100000);
             bool retVal = doDFS(_i, _j, word, visited, idx+1);
-            visited[_i][_j] = false;
+
             if(retVal){
                 cout<<"\n word found during dfs";
                 return true;
             }
+            visited[_i][_j] = false;
+            if(!retVal)
+                BoggleGUI::setHighlighted(_i, _j, false);
         }
     }
 
@@ -225,6 +232,7 @@ void Boggle::doDFSAndAddWords(int i, int j, string strTillHere, bool visited[BOA
 
 Vector<string> Boggle::splitStringToWords(string text, char sep) {
     Vector<string> tokens;
+
         size_t start = 0, end = 0;
         while ((end = text.find(sep, start)) != string::npos) {
             if (end != start) {
@@ -250,14 +258,17 @@ void Boggle::addWordsToHumanList(Vector<string> validWords){
     for (Vector<string>::iterator it = validWords.begin() ; it != validWords.end(); ++it){
         humanWords.add(*it);
         BoggleGUI::recordWord(*it, BoggleGUI::HUMAN);
+        BoggleGUI::setStatusMessage("You found a new word! \"" + *it + "\"");
         BoggleGUI::setScore(getScoreHuman(), BoggleGUI::HUMAN);
     }
 }
 
 void Boggle::addWordsToComputerList(Set<string> validWords){
+
     for (Set<string>::iterator it = validWords.begin() ; it != validWords.end(); ++it){
         computerWords.add(*it);
         BoggleGUI::recordWord(*it, BoggleGUI::COMPUTER);
+        // BoggleGUI::setStatusMessage("Manual, comp new word");
         BoggleGUI::setScore(getScoreComputer(), BoggleGUI::COMPUTER);
     }
 }
