@@ -8,7 +8,19 @@
 
 Map<int, int> buildFrequencyTable(istream& input) {
     // TODO: implement this function
-    Map<int, int> freqTable;   // this is just a placeholder so it will compile
+    Map<int, int> freqTable; // this is just a placeholder so it will compile
+    int ch = input.get();
+    while(ch!=-1){
+        if(freqTable.containsKey(ch)){
+            freqTable[ch]++;
+        }else{
+            freqTable.add(ch, 1);
+        }
+        ch = input.get();
+        freqTable.add(ch, 1);
+    }
+    freqTable.add(-1, 1); // add one EOF
+
     return freqTable;          // this is just a placeholder so it will compile
 }
 
