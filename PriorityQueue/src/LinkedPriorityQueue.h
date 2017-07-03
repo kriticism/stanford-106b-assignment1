@@ -33,6 +33,8 @@ public:
 
 private:
     // TODO: add any other member functions/variables necessary
+    ListNode* LinkedPQfront;
+
 
 };
 

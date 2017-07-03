@@ -7,27 +7,45 @@
 #include "LinkedPriorityQueue.h"
 
 LinkedPriorityQueue::LinkedPriorityQueue() {
-    // TODO: implement
-
+    LinkedPQfront = NULL;
 }
 
 LinkedPriorityQueue::~LinkedPriorityQueue() {
-    // TODO: implement
-
+    clear();
+    free(LinkedPQfront);
 }
 
 void LinkedPriorityQueue::changePriority(string value, int newPriority) {
-    // TODO: implement
+    ListNode* current = LinkedPQfront;
+    while(current != NULL && current->value != value){
+        current = current->next;
+    }
 
+    if(current == NULL){
+        // item not found in list
+    }else{
+        current->priority = newPriority;
+    }
 }
 
 void LinkedPriorityQueue::clear() {
-    // TODO: implement
-
+    ListNode* current = LinkedPQfront;
+    ListNode* next;
+    while(current != NULL){
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    LinkedPQfront = NULL;
 }
 
 string LinkedPriorityQueue::dequeue() {
-    // TODO: implement
+    ListNode* current = LinkedPQfront;
+    List* prev = NULL;
+    string retVal;
+    while(current!=NULL){
+
+    }
     return "";   // remove this
 }
 

@@ -24,6 +24,8 @@ public:
     string peek() const;
     int peekPriority() const;
     int size() const;
+    int len() const;
+    string stringifyArrPQ() const;
     friend ostream& operator <<(ostream& out, const ArrayPriorityQueue& queue);
 
 private:
