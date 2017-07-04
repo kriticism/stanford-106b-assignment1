@@ -15,6 +15,7 @@
 // #define _pqueue_
 
 #include "vector.h"
+#include <string>
 
 
 template <typename Type>
@@ -269,11 +270,27 @@ Map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
 }
 
 void encodeData(istream& input, const Map<int, string>& encodingMap, obitstream& output) {
-    // TODO: implement this function
+    int ch = input.get();
+    while(ch!=-1){
+        // cout<<(char)ch;
+        string bitString = encodingMap[ch];
+        for(int i=0; i<bitString.length(); i++){
+            (bitString[i] == '1') ? output.writeBit(1): output.writeBit(0);
+        }
+        ch = input.get();
+    }
+    string bitString = encodingMap[256];
+    for(int i=0; i<bitString.length(); i++){
+        (bitString[i] == '1') ? output.writeBit(1): output.writeBit(0);
+    }
 }
 
 void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
     // TODO: implement this function
+    if(encodingTree == NULL){
+        return;
+    }
+
 }
 
 void compress(istream& input, obitstream& output) {
