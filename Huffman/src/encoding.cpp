@@ -285,22 +285,64 @@ void encodeData(istream& input, const Map<int, string>& encodingMap, obitstream&
     }
 }
 
+void traverseAndDecode(Vector<int> bitSequence, HuffmanNode* encodingTree, ostream& output){
+    int i=-1;
+    int bitSequenceLen = bitSequence.size();
+    if(bitSequenceLen == 0) // empty input
+        return;
+    bool stop = false; // flag to see if EOF was reached
+
+    HuffmanNode* curr = encodingTree;
+    while( ! (i+1>=bitSequenceLen || stop) ){
+        i++;
+        if(bitSequence[i] == 0){
+            // go left
+            curr = curr->zero;
+        }
+        else if(bitSequence[i] == 1){
+            // go right
+            curr = curr->one;
+            }
+        // if leaf, update output and set curr to head
+        if(curr->isLeaf()){
+            if(curr->character == EOF)
+                stop = true;
+            output.put(curr->character);
+            curr = encodingTree;
+        }
+    }
+    // TODO kay: correct answer but 2 bytes extra, don't know why
+}
+
 void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
-    // TODO: implement this function
     if(encodingTree == NULL){
         return;
     }
-
+    Vector<int> bitSequence;
+    int ch = input.readBit();;
+    while(ch!=EOF){
+        bitSequence.push_back(ch);
+        ch = input.readBit();
+    }
+    cout<<endl;
+    traverseAndDecode(bitSequence, encodingTree, output);
 }
 
 void compress(istream& input, obitstream& output) {
-    // TODO: implement this function
+    // Build Frequency Table, Build Tree, Build Map, Print Frequency Table to output, rewind, encode the file to output
 }
 
 void decompress(ibitstream& input, ostream& output) {
-    // TODO: implement this function
+    // Read the Frequency Table, Build Tree, Decode File
 }
 
 void freeTree(HuffmanNode* node) {
-    // TODO: implement this function
+    if(!node) // empty tree, return
+        return;
+    if(node->zero) // delete left subtree if exists
+        freeTree(node->zero);
+    if(node->one) // delete right subtree if exists
+        freeTree(node->one);
+    delete node; // free(node); // delete this node
+    return;
 }
