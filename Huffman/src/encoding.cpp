@@ -236,7 +236,7 @@ string getCodeFromVector(Vector<int> pathTillNow){
 }
 
 void traverseAndPopulateMap(HuffmanNode* encodingTree, Vector<int>& pathTillNow, Map<int, string>& encodingMap){
-    cout<<"Called with vector sequence "<<getCodeFromVector(pathTillNow);
+    // cout<<"Called with vector sequence "<<getCodeFromVector(pathTillNow);
     if(encodingTree == NULL){
         return;
     }
@@ -244,7 +244,7 @@ void traverseAndPopulateMap(HuffmanNode* encodingTree, Vector<int>& pathTillNow,
         // update encoding map and return
         string huffCodeForLetter = getCodeFromVector(pathTillNow);
         encodingMap.add(encodingTree->character, huffCodeForLetter);
-        cout<<"\nCode found at leaf: "<< encodingTree->character<<" "<< huffCodeForLetter<<endl;
+        // cout<<"\nCode found at leaf: "<< encodingTree->character<<" "<< huffCodeForLetter<<endl;
         return;
     }
     else{
@@ -330,10 +330,83 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
 
 void compress(istream& input, obitstream& output) {
     // Build Frequency Table, Build Tree, Build Map, Print Frequency Table to output, rewind, encode the file to output
+    Map<int, int> freqTable = buildFrequencyTable(input);
+    HuffmanNode* encodingTree = buildEncodingTree(freqTable);
+    Map<int, string> encodingMap = buildEncodingMap(encodingTree);
+    // print freqtable to output
+    input.seekg(0); // rewind
+    encodeData(input, encodingMap, output);
+
+}
+
+///* Function: readFileHeader
+// * Usage: Map<int, int> freq = writeFileHeader(input);
+// * --------------------------------------------------------
+// * Reads a table to the front of the specified input file
+// * that contains information about the frequencies of all of
+// * the letters in the input text.  This information can then
+// * be used to reconstruct the encoding tree for that file.
+// *
+// * This function is provided for you.  You are free to modify
+// * it if you see fit, but if you do you must also update the
+// * writeFileHeader function defined before this one so that it
+// * can properly write the data.
+// */
+Map<int, int> readFileHeader(ibitstream& infile) {
+    /* This function inverts the mapping we wrote out in the
+     * writeFileHeader function before.  If you make any
+     * changes to that function, be sure to change this one
+     * too!
+     */
+    Map<int, int> result;
+
+    /* Read how many values we're going to read in. */
+    int numValues;
+    infile >> numValues;
+
+    /* Skip trailing whitespace. */
+    infile.get();
+
+    /* Read those values in. */
+    for (int i = 0; i < numValues; i++) {
+        /* Get the character we're going to read. */
+        int ch = infile.get();
+
+        /* Get the frequency. */
+        int frequency;
+        infile >> frequency;
+
+        /* Skip the space character. */
+        infile.get();
+
+        /* Add this to the encoding table. */
+        result[ch] = frequency;
+    }
+
+    /* Add in 1 for PSEUDO_EOF. */
+    result[PSEUDO_EOF] = 1;
+    return result;
 }
 
 void decompress(ibitstream& input, ostream& output) {
-    // Read the Frequency Table, Build Tree, Decode File
+    // implementation 1 starts || mine
+                // !!!!! read the freq table from wheeeere?
+                // Read the Frequency Table, Build Tree, Decode File
+                Map<int, int> freqTable = buildFrequencyTable(input); // MUST BE WRONG!, mandatory for next line
+                HuffmanNode* encodingTree = buildEncodingTree(freqTable); // mandatory for next line
+                decodeData(input, encodingTree, output); // mandatory line
+                freeTree(encodingTree);
+    // implementation 1 ends
+
+    // implementation 2 starts || copied
+//                Map<int, int> freqTable = readFileHeader(input);
+//                HuffmanNode* encodingTree = buildEncodingTree(freqTable);
+//                decodeData(input, encodingTree, output); // mandatory line
+//                freeTree(encodingTree);
+    // implementation 2 ends
+
+
+
 }
 
 void freeTree(HuffmanNode* node) {
