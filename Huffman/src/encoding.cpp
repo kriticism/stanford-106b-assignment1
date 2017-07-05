@@ -233,17 +233,14 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
 void compress(istream& input, obitstream& output) {
     Map<int, int> freqTable = buildFrequencyTable(input);               // Build Frequency Table
     HuffmanNode* encodingTree = buildEncodingTree(freqTable);           // Build Tree
-//    printSideways(encodingTree, false, "   ");
     Map<int, string> encodingMap = buildEncodingMap(encodingTree);      // Build Map
-
-    cout<<"------------------\n";
-    cout<<"written during compress:\n";
-    cout<<freqTable.toString();
-    cout<<"\n------------------\n";
 
 //    output << freqTable;                                               // Print Frequency Table to output
     writeFileHeader(output, freqTable);                                 // Print Frequency Table to output
+    cout<<"moving input pos from "<<input.tellg();
+    input.clear();
     input.seekg(0);                                                      // rewind
+    cout<<"to "<<input.tellg();
     encodeData(input, encodingMap, output);                              // encode the file to output
     freeTree(encodingTree);
 }
@@ -251,11 +248,6 @@ void compress(istream& input, obitstream& output) {
 void decompress(ibitstream& input, ostream& output) {
     Map<int, int> freqTable = readFileHeader(input);
 //    Map<int, int> freqTable; input >> freqTable;
-
-    cout<<"------------------\n";
-    cout<<"read during decompress:"<<sizeof(freqTable)<<endl;
-    cout<<freqTable.toString();
-    cout<<"\n------------------\n";
 
     cout<<"\n freq noted while decompressing: \n";
     cout<<freqTable.toString()<<endl;
